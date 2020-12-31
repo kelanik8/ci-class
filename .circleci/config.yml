@@ -16,6 +16,15 @@ jobs:
       - image: circleci/node:13.8.0
     steps:
       - run: echo "World"
+  build:
+    docker:
+      - image: circleci/node:13.8.0
+    steps:
+      - checkout
+      - run: 
+          name: "echo an env var that is part of our project"
+          command: |
+            echo $MY_ENV_VAR # this env var must be set within the project
 workflows:
   # Name the workflow "welcome"
   welcome:
@@ -26,3 +35,4 @@ workflows:
     jobs:
       - print_hello
       - print_world
+      - build
