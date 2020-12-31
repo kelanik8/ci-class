@@ -35,3 +35,4 @@ workflows:
     jobs:
       - print_hello
       - print_world
+      - build
