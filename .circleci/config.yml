@@ -33,10 +33,20 @@ jobs:
       - attach_workspace:
           at: ~/
       - run: cat ~/output.txt
+  when_on_fail:
+    docker:
+      - image: circleci/node:13.8.0
+    steps:
+      - run: return 1
+      - run:
+          name: on error
+          command: echo "Hello World"
+          when: on_fail
 workflows:
   main_workflow:
     jobs:
       - my_job
+      - when_on_fail
       - save_hello_world_output
       - print_output_file:
           requires:
