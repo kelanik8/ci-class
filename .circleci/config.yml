@@ -47,7 +47,20 @@ jobs:
       - run:
           name: Configure server
           command: ansible-playbook -i inventory playbook.yml
+  smoke_text_review:
+    docker:
+      - image: alpine:latest
+    steps:
+      - checkout
+      - run :
+          name: Validation Successfull Deployment
+          command: if curl -s --head "https://google222.com" 
+                    then
+                      echo "It worked!"
+                    else
+                      echo "It failed"
+                    fi
 workflows:
   main_workflow:
     jobs:
-      - configure_infrastructure
+      - smoke_text_review
