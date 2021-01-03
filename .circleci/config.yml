@@ -33,7 +33,7 @@ jobs:
       - checkout
       - run:
           name: Ensure backend infrastructure exist
-          command: aws cloudformation deploy --template-file template.yml --stack-name my-stack
+          command: aws cloudformation deploy --template-file template.yml --stack-name infrad-demo
 workflows:
   main_workflow:
     jobs:
