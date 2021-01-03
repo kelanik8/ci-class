@@ -34,6 +34,19 @@ jobs:
       - run:
           name: Ensure backend infrastructure exist
           command: aws cloudformation deploy --template-file template.yml --stack-name infrad-demo
+  configure_infrastructure:
+    docker:
+      - image: python:3.7-alpine3.11
+    steps:
+      - checkout
+      - add_ssh_keys:
+          fingerprints: ["20:44:d5:85:0d:85:94:4e:cc:a0:ea:a4:b4:4e:0d:3f"]
+      - run:
+          name: Install dependencies
+          command: apk add --update ansible
+      - run:
+          name: Configure server
+          command: ansible-playbook -i inventory.txt playbook.yml
 workflows:
   main_workflow:
     jobs:
