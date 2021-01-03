@@ -52,14 +52,16 @@ jobs:
       - image: alpine:latest
     steps:
       - checkout
+      - run: apk add --update curl
       - run :
           name: Validation Successfull Deployment
-          command: if curl -s --head "https://google222.com" 
-                    then
-                      echo "It worked!"
-                    else
-                      echo "It failed"
-                    fi
+          command: | 
+            if curl -s --head "https://blog.udacity.com/" 
+            then
+              return "It worked!"
+            else
+              return "It failed"
+            fi
 workflows:
   main_workflow:
     jobs:
