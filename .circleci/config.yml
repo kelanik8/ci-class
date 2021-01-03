@@ -26,18 +26,15 @@ jobs:
           root: ~/
           paths:
             - output.txt
-  print_output_file:
+  create_infrastructure:
     docker:
-      - image: circleci/node:13.8.0
+      - image: amazon/aws-cli
     steps:
-      - attach_workspace:
-          at: ~/
-      - run: cat ~/output.txt
+      - checkout
+      - run:
+          name: Ensure backend infrastructure exist
+          command: aws cloudformation deploy --template-file template.yml --stack-name my-stack
 workflows:
   main_workflow:
     jobs:
-      - my_job
-      - save_hello_world_output
-      - print_output_file:
-          requires:
-            - save_hello_world_output
+      - create_infrastructure
