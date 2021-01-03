@@ -50,4 +50,4 @@ jobs:
 workflows:
   main_workflow:
     jobs:
-      - create_infrastructure
+      - configure_infrastructure
