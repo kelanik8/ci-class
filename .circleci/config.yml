@@ -3,6 +3,10 @@ version: 2.1
 orbs:
   welcome: circleci/welcome-orb@0.4.1
 commands:
+  delete_infrastructure:
+    description: "Delete Infrastructure"
+    steps:
+      - run: aws cloudformation delete-stack --stack-name infrad-demo
   print_pipeline_id:
     description: "Print Circle CI workflow ID"
     parameters:
@@ -34,6 +38,9 @@ jobs:
       - run:
           name: Ensure backend infrastructure exist
           command: aws cloudformation deploy --template-file template.yml --stack-name infrad-demo
+      - run: return 1
+      - delete_infrastructure
+    when: on_fail
   configure_infrastructure:
     docker:
       - image: python:3.7-alpine3.11
@@ -47,6 +54,15 @@ jobs:
       - run:
           name: Configure server
           command: ansible-playbook -i inventory playbook.yml
+  destroy_environments:
+    docker:
+      - image: amazon/aws-cli
+    steps:
+      - checkout
+      - run:
+          name: Delete Enviroments
+          command: return 1
+      - delete_infrastructure
   smoke_text_review:
     docker:
       - image: alpine:latest
@@ -65,4 +81,4 @@ jobs:
 workflows:
   main_workflow:
     jobs:
-      - smoke_text_review
+      - create_infrastructure
