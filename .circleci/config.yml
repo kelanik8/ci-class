@@ -58,9 +58,9 @@ jobs:
           command: | 
             if curl -s --head "https://blog.udacity.com/" 
             then
-              return "It worked!"
+              return 0
             else
-              return "It failed"
+              return 1
             fi
 workflows:
   main_workflow:
